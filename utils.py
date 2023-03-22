@@ -20,15 +20,21 @@ def getdata_hh():
     vacan_data.append(requests.get('https://api.hh.ru/vacancies', params).json())
     #print(requests.get('https://api.hh.ru/vacancies')) # <Response [200]>
     return vacan_data
-print(getdata_hh())
-for i in getdata_hh():
-    print(len(i['items']))
-    print(i['items'][1]['name'])  #Назавние вакасии
-    print(i['items'][1]['area']['name'])  #город
-    print(i['items'][1]['salary']['from'])  #зп от
-    print(i['items'][1]['salary']['to'])  # зп до
-    print(i['items'][1]['alternate_url'])  # ссылка на вакансию
-    print(i['items'][1]['employer']['name'])  #Назавние работадателя  9
-    print(i['items'][1]['snippet']['requirement'])  # описание вакансии
-    print(i['items'][1]['snippet']['responsibility'])  # обязанности
-    print(i['items'][1]['professional_roles'][0]['name'])  # роль
+
+def getdata_sj():
+    '''Загружаем данные с SJ в список'''
+    vacan_data = []
+    headers = {'X-Api-App-Id': 'v3.r.137072254.91507caae1057df778d94b793caa49bbb3f527c1.e45a120ec40cec1fceb1cd98813e2ff196b99ac7'}
+    vacan_data.append(requests.get('https://api.superjob.ru/2.0/vacancies/?page=0&count=1', headers=headers).json())
+
+    return vacan_data
+k = getdata_sj()
+print(k)
+print((k[0]['objects'][0]['payment_from']))  # зп от
+print((k[0]['objects'][0]['payment_to']))   # зп до
+print((k[0]['objects'][0]['town']['title']))   # адрес работы
+print((k[0]['objects'][0]['profession']))   # название вакансии
+print((k[0]['objects'][0]['client']['title']))   # название работадателя
+print((k[0]['objects'][0]['candidat']))   # описание вакансии
+print((k[0]['objects'][0]['work']))   # обязанности вакансии
+print((k[0]['objects'][0]['link']))   # ссылка

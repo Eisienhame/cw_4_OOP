@@ -30,7 +30,7 @@ class Engine():
     def get_request_sj(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными ваансиями'
         'Файл в json формате будет создан и с него уже будет делать запросы пользователь'
-        pass
+        pas
 
     @staticmethod
     def get_connector(file_name):
