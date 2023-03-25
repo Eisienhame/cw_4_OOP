@@ -19,22 +19,18 @@ def getdata_hh():
     }
     vacan_data.append(requests.get('https://api.hh.ru/vacancies', params).json())
     #print(requests.get('https://api.hh.ru/vacancies')) # <Response [200]>
-    return vacan_data
+    with open("data_file.json", "w", encoding='utf-8') as write_file:
+        pass
+    with open("data_file.json", "w", encoding='utf-8') as write_file:
+        json.dump(vacan_data, write_file, indent=4)
 
 def getdata_sj():
     '''Загружаем данные с SJ в список'''
     vacan_data = []
     headers = {'X-Api-App-Id': 'v3.r.137072254.91507caae1057df778d94b793caa49bbb3f527c1.e45a120ec40cec1fceb1cd98813e2ff196b99ac7'}
-    vacan_data.append(requests.get('https://api.superjob.ru/2.0/vacancies/?page=0&count=1', headers=headers).json())
+    vacan_data.append(requests.get('https://api.superjob.ru/2.0/vacancies/?page=0&count=10', headers=headers).json())
+    with open("data_file.json", "w", encoding='utf-8') as write_file:
+        pass
+    with open("data_file.json", "w", encoding='utf-8') as write_file:
+        json.dump(vacan_data, write_file, indent=4)
 
-    return vacan_data
-k = getdata_sj()
-print(k)
-print((k[0]['objects'][0]['payment_from']))  # зп от
-print((k[0]['objects'][0]['payment_to']))   # зп до
-print((k[0]['objects'][0]['town']['title']))   # адрес работы
-print((k[0]['objects'][0]['profession']))   # название вакансии
-print((k[0]['objects'][0]['client']['title']))   # название работадателя
-print((k[0]['objects'][0]['candidat']))   # описание вакансии
-print((k[0]['objects'][0]['work']))   # обязанности вакансии
-print((k[0]['objects'][0]['link']))   # ссылка
