@@ -15,7 +15,7 @@ def getdata_hh():
     params = {
         'area': 113,  # Поиск в Ru зоне
         'page': 1,  # Номер страницы
-        'per_page': 10  # Кол-во вакансий на 1 странице
+        'per_page': 30  # Кол-во вакансий на 1 странице
     }
     vacan_data.append(requests.get('https://api.hh.ru/vacancies', params).json())
     #print(requests.get('https://api.hh.ru/vacancies')) # <Response [200]>
