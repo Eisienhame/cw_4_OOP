@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, re
 from utils import getdata_hh, getdata_sj
 from abc import abstractmethod
 
@@ -40,14 +40,17 @@ class Engine():
                         red_response = i['items'][n]['snippet']['responsibility']
 
 
+                    next_item = {'name': i['items'][n]['name'],
+                                        'url': i['items'][n]['alternate_url'],
+                                        'area': i['items'][n]['area']['name'],
+                                        'salary': salary_single,
+                                        'employer': i['items'][n]['employer']['name'],
+                                        'requirement': red_requir, #требоваия
+                                        'responsibility': red_response}  #описание
 
-                    work_dic_hh.append({f"'name': {i['items'][n]['name']}",
-                                        f"'url': {i['items'][n]['alternate_url']}",
-                                        f"'area': {i['items'][n]['area']['name']}",
-                                        f"'salary': {salary_single}",
-                                        f"'employer': {i['items'][n]['employer']['name']}",
-                                        f"'requirement': {red_requir}", #требоваия
-                                        f"'responsibility': {red_response}"})  #описание
+
+                    work_dic_hh.append(next_item)
+
         return work_dic_hh
 
     @abstractmethod
@@ -72,31 +75,30 @@ class Engine():
                         red_requir = 'No'
                     elif len(i['objects'][n]['work']) > 150:
                         red_requir = i['objects'][n]['work']
-                        red_requir.replace('\n', '')
+                        red_requir.re.sub('\n', '', red_requir)
                         red_requir = red_requir[:150] + '...'
                     else:
                         red_requir = i['objects'][n]['work']
-                        red_requir.replace('\n', '')
+                        red_requir.re.sub('\n', '', red_requir)
 
                     'Если строка описания больше 150 знаков - укоротим'
                     if i['objects'][n]['candidat'] is None:
                         red_response = 'No'
                     elif len(i['objects'][n]['candidat']) > 150:
                         red_response = i['objects'][n]['candidat']
-                        red_response.replace('\n', '')
+                        red_response = re.sub('\n', '', red_response)
                         red_response = red_response[:150] + '...'
                     else:
                         red_response = i['objects'][n]['candidat']
-                        red_response.replace('\n', '')
+                        red_response = re.sub('\n', '', red_response)
 
-                    work_dic_sj.append({f"'name': {i['objects'][n]['profession']},"
-                                        f"'url': {i['objects'][n]['link']},"
-                                        f"'area': {i['objects'][n]['town']['title']},"
-                                        f"'salary': {salary_single},"
-                                        f"'employer': {i['objects'][n]['client']['title']},"
-                                        f"'requirement': {red_requir}", #требоваия
-                                        f"'responsibility': {red_response}"})  #описание
-                print(work_dic_sj)
+                    work_dic_sj.append({'name': i['objects'][n]['profession'],
+                                        'url': i['objects'][n]['link'],
+                                        'area': i['objects'][n]['town']['title'],
+                                        'salary': salary_single,
+                                        'employer': i['objects'][n]['client']['title'],
+                                        'requirement': red_requir, #требоваия
+                                        'responsibility': red_response})  #описание
         return work_dic_sj
 
 
@@ -107,28 +109,52 @@ class Engine():
 
 
 class HH(Engine):
+    '''Формируем класс ХХ по искомому знач в названии вакансии, и создаем файл json с необходимыми параметрами'''
     def __init__(self, key_search):
         data = self.get_request_hh()
-
+        if type(key_search) != str:
+            raise TypeError("Некорректный запрос на поиск вакансий")
+        else:
+            searching_list = []
+            for i in data:
+                #k = key_search.lower
+                if key_search.lower() in str(i['name']).lower():
+                    searching_list.append(i)
+            with open("searching_vac.json", "w", encoding='utf-8') as write_file:
+                json.dump(searching_list, write_file, indent=4)
 class Superjob(Engine):
+    '''Формируем класс SJ по искомому знач в названии вакансии, и создаем файл json с необходимыми параметрами'''
     def __init__(self, key_search):
         data = self.get_request_sj()
-        search_vac = []
-
-        with open("searching_vac.json", "w", encoding='utf-8') as write_file:
-            pass
-        with open("searching_vac.json", "w", encoding='utf-8') as write_file:
-            json.dump(vacan_data, write_file, indent=4)
-class Vacancy_hh():
+        print(data)
+        if type(key_search) != str:
+            raise TypeError("Некорректный запрос на поиск вакансий")
+        else:
+            searching_list = []
+            for i in data:
+                if key_search.lower() in str(i['name']).lower():
+                    searching_list.append(i)
+            with open("searching_vac.json", "w", encoding='utf-8') as write_file:
+                json.dump(searching_list, write_file, indent=4)
+class Vacancy():
     ''' Класс для работы и хранения данных о вакансии'''
-    def __init__(self, data):
-        self.__name = ''
-        self.__url = ''
-        self.__area = ''
-        self.__salary = ''
-        self.__responsibility = ''
-        self.__requirement = ''
+    def __init__(self, data:dict):
+        self.__name = data['name']
+        self.__url = data['url']
+        self.__area = data['area']
+        self.__salary = data['salary']
+        self.__responsibility = data['responsibility']
+        self.__requirement = data['requirement']
 
     def __repr__(self):
         return f'Название вакансии: {self.__name} \n Ссылка на вакансию: {self.__url} \n Город: {self.__area} \n Зарплата: {self.__salary} \n Описание: {self.__responsibility} Требования: {self.__requirement}'
 
+    def __lt__(self, other):
+        if type(self.__salary) == str or type(other.__salary) == str:
+            raise TypeError("Невозможно сравнить так как у одной из вакансий ЗП неизвестна")
+        return self.__salary < other.__salary
+
+    def __gt__(self, other):
+        if type(self.__salary) == str or type(other.__salary) == str:
+            raise TypeError("Невозможно сравнить так как у одной из вакансий ЗП неизвестна")
+        return self.__salary > other.__salary

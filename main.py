@@ -1,5 +1,8 @@
 import requests, json
-from classes import Engine
+from classes import HH, Engine, Superjob
 
-k = Engine()
-k.get_request_sj()
+# k = Engine()
+#
+# print(type(k.get_request_hh()), 'fg')
+
+s = Superjob(123)
