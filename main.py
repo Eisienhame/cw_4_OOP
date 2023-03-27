@@ -60,5 +60,3 @@ while main_exit is True:
                         main_exit = False
                         menu_exit = False
                         break
-            # main_exit = False # здесь цикл while меню
-            # break

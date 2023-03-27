@@ -7,7 +7,7 @@ class Engine():
     @abstractmethod
     def get_request_hh(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        # getdata_hh()
+        getdata_hh()
         work_dic_hh = []
         with open("data_file.json", "r") as write_file:
             dic_hh = json.load(write_file)
@@ -56,7 +56,7 @@ class Engine():
     @abstractmethod
     def get_request_sj(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        # getdata_sj()
+        #getdata_sj()
         work_dic_sj = []
         with open("data_file.json", "r") as write_file:
             dic_sj = json.load(write_file)
@@ -92,11 +92,17 @@ class Engine():
                         red_response = i['objects'][n]['candidat']
                         red_response = re.sub('\n', '', red_response)
 
+                    'Если не названия работадателя ставим Unknown'
+                    if len(i['objects'][n]['client']) < 2:
+                        employer_single = 'Unknown'
+                    else:
+                        employer_single = i['objects'][n]['client']['title']
+
                     work_dic_sj.append({'name': i['objects'][n]['profession'],
                                         'url': i['objects'][n]['link'],
                                         'area': i['objects'][n]['town']['title'],
                                         'salary': salary_single,
-                                        'employer': i['objects'][n]['client']['title'],
+                                        'employer': employer_single,
                                         'requirement': red_requir,  # требоваия
                                         'responsibility': red_response})  # описание
         return work_dic_sj
@@ -169,7 +175,6 @@ class HH(Engine):
 
     def __init__(self, key_search):
         data = self.get_request_hh()
-        print(data)
         if type(key_search) != str:
             raise TypeError("Некорректный запрос на поиск вакансий")
         else:
@@ -186,6 +191,7 @@ class Superjob(Engine):
 
     def __init__(self, key_search):
         data = self.get_request_sj()
+        print(data)
         if type(key_search) != str:
             raise TypeError("Некорректный запрос на поиск вакансий")
         else:
