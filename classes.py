@@ -7,14 +7,16 @@ class Engine():
     @abstractmethod
     def get_request_hh(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        getdata_hh()
+        #getdata_hh()
         work_dic_hh = []
         with open("data_file.json", "r") as write_file:
             dic_hh = json.load(write_file)
             for i in dic_hh:
                 for n in range(len(i['items'])):
                     'Значение зп всместо от и до будет иметь 1 значение, и знач от в приоритете'
-                    if i['items'][n]['salary']['from'] is None and i['items'][n]['salary']['to'] is None:
+                    if i['items'][n]['salary'] is None:
+                        salary_single = 'Unknown'
+                    elif i['items'][n]['salary']['from'] is None and i['items'][n]['salary']['to'] is None:
                         salary_single = 'Unknown'
                     elif i['items'][n]['salary']['from'] is None and i['items'][n]['salary']['to'] > 0:
                         salary_single = i['items'][n]['salary']['to']
