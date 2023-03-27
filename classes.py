@@ -121,6 +121,7 @@ class Engine():
                 break
 
     def see_top_10(self):
+        'Показывает топ-10 по Зп вакансий из списка пользователя'
         data = self.get_connector()
         best_list = []
         if self.get_len_search_vac() > 10:
@@ -147,6 +148,17 @@ class Engine():
             s = Vacancy(vacan)
             print(s)
 
+    def find_city(self, search_city:str):
+        'Делается выборка вакансий по указанному городу и показывается'
+        data = self.get_connector()
+        count_city = 0
+        for i in data:
+            if search_city.lower() in i['area'].lower():
+                s = Vacancy(i)
+                print(s)
+                count_city += 1
+        if count_city == 0:
+            print('Нет такого города')
     def get_len_search_vac(self):
         'Дает значение кол-ва найденных вакансий'
         i = self.get_connector()

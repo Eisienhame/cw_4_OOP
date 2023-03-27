@@ -50,7 +50,10 @@ while main_exit is True:
                         job_class.see_top_10()
 
                     if option_menu == '3':
-                        pass
+                        print('Введите название города для поиска')
+                        search_city = input()
+                        print()
+                        job_class.find_city(search_city)
 
                     if option_menu == '0':
                         print('Спасибо...')
