@@ -23,21 +23,21 @@ class Engine():
                     else:
                         salary_single = i['items'][n]['salary']['from']
 
-                    'Если строка требований больше 150 знаков - укоротим'
+                    'Если строка требований больше 180 знаков - укоротим'
                     if i['items'][n]['snippet']['requirement'] is None:
                         red_requir = 'No'
-                    elif len(i['items'][n]['snippet']['requirement']) > 200:
+                    elif len(i['items'][n]['snippet']['requirement']) > 180:
                         red_requir = i['items'][n]['snippet']['requirement']
-                        red_requir = red_requir[:200] + '...'
+                        red_requir = red_requir[:180] + '...'
                     else:
                         red_requir = i['items'][n]['snippet']['requirement']
 
-                    'Если строка описания больше 150 знаков - укоротим'
+                    'Если строка описания больше 180 знаков - укоротим'
                     if i['items'][n]['snippet']['responsibility'] is None:
                         red_response = 'No'
-                    elif len(i['items'][n]['snippet']['responsibility']) > 200:
+                    elif len(i['items'][n]['snippet']['responsibility']) > 180:
                         red_response = i['items'][n]['snippet']['responsibility']
-                        red_response = red_response[:200] + '...'
+                        red_response = red_response[:180] + '...'
                     else:
                         red_response = i['items'][n]['snippet']['responsibility']
 
@@ -70,27 +70,23 @@ class Engine():
                     else:
                         salary_single = i['objects'][n]['payment_from']
 
-                    'Если строка требований больше 150 знаков - укоротим'
+                    'Если строка требований больше 180 знаков - укоротим'
                     if i['objects'][n]['work'] is None:
                         red_requir = 'No'
-                    elif len(i['objects'][n]['work']) > 200:
+                    elif len(i['objects'][n]['work']) > 180:
                         red_requir = i['objects'][n]['work']
-                        red_requir.re.sub('\n', '', red_requir)
-                        red_requir = red_requir[:200] + '...'
+                        red_requir = red_requir[:180] + '...'
                     else:
                         red_requir = i['objects'][n]['work']
-                        red_requir.re.sub('\n', '', red_requir)
 
-                    'Если строка описания больше 150 знаков - укоротим'
+                    'Если строка описания больше 180 знаков - укоротим'
                     if i['objects'][n]['candidat'] is None:
                         red_response = 'No'
-                    elif len(i['objects'][n]['candidat']) > 200:
+                    elif len(i['objects'][n]['candidat']) > 180:
                         red_response = i['objects'][n]['candidat']
-                        red_response = re.sub('\n', '', red_response)
-                        red_response = red_response[:200] + '...'
+                        red_response = red_response[:180] + '...'
                     else:
                         red_response = i['objects'][n]['candidat']
-                        red_response = re.sub('\n', '', red_response)
 
                     'Если не названия работадателя ставим Unknown'
                     if len(i['objects'][n]['client']) < 2:
@@ -122,6 +118,7 @@ class Engine():
         for vacan in i:
             s = Vacancy(vacan)
             print(s)
+            print()
             i_count += 1
             if i_count == n:
                 break
@@ -153,6 +150,7 @@ class Engine():
         for vacan in best_list:
             s = Vacancy(vacan)
             print(s)
+            print()
 
     def find_city(self, search_city:str):
         'Делается выборка вакансий по указанному городу и показывается'
@@ -162,6 +160,7 @@ class Engine():
             if search_city.lower() in i['area'].lower():
                 s = Vacancy(i)
                 print(s)
+                print()
                 count_city += 1
         if count_city == 0:
             print('Нет такого города')

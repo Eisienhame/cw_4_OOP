@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, re
 from classes import HH, Engine, Superjob, Vacancy
 
 main_exit = True  # ключи для более наглядного завершения программы
