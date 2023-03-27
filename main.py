@@ -3,7 +3,6 @@ from classes import HH, Engine, Superjob, Vacancy
 
 main_exit = True  # ключи для более наглядного завершения программы
 menu_exit = True
-#menu_exit2 = True # ключ
 
 
 k = Engine()
@@ -42,10 +41,17 @@ while main_exit is True:
                         print(f'Ввиде кол-во для показа. Максимум : {vacancy_count}')
                         which_see = input()
                         if which_see.isdigit() and int(which_see) <= vacancy_count:
-                            pass
+                            job_class.see_vacansies(which_see)
                         else:
                             print('Неверное значение')
                             continue
+
+                    if option_menu == '2':
+                        pass
+
+                    if option_menu == '3':
+                        pass
+
                     if option_menu == '0':
                         print('Спасибо...')
                         main_exit = False

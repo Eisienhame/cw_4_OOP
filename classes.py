@@ -26,18 +26,18 @@ class Engine():
                     'Если строка требований больше 150 знаков - укоротим'
                     if i['items'][n]['snippet']['requirement'] is None:
                         red_requir = 'No'
-                    elif len(i['items'][n]['snippet']['requirement']) > 150:
+                    elif len(i['items'][n]['snippet']['requirement']) > 200:
                         red_requir = i['items'][n]['snippet']['requirement']
-                        red_requir = red_requir[:150] + '...'
+                        red_requir = red_requir[:200] + '...'
                     else:
                         red_requir = i['items'][n]['snippet']['requirement']
 
                     'Если строка описания больше 150 знаков - укоротим'
                     if i['items'][n]['snippet']['responsibility'] is None:
                         red_response = 'No'
-                    elif len(i['items'][n]['snippet']['responsibility']) > 150:
+                    elif len(i['items'][n]['snippet']['responsibility']) > 200:
                         red_response = i['items'][n]['snippet']['responsibility']
-                        red_response = red_response[:150] + '...'
+                        red_response = red_response[:200] + '...'
                     else:
                         red_response = i['items'][n]['snippet']['responsibility']
 
@@ -73,10 +73,10 @@ class Engine():
                     'Если строка требований больше 150 знаков - укоротим'
                     if i['objects'][n]['work'] is None:
                         red_requir = 'No'
-                    elif len(i['objects'][n]['work']) > 150:
+                    elif len(i['objects'][n]['work']) > 200:
                         red_requir = i['objects'][n]['work']
                         red_requir.re.sub('\n', '', red_requir)
-                        red_requir = red_requir[:150] + '...'
+                        red_requir = red_requir[:200] + '...'
                     else:
                         red_requir = i['objects'][n]['work']
                         red_requir.re.sub('\n', '', red_requir)
@@ -84,10 +84,10 @@ class Engine():
                     'Если строка описания больше 150 знаков - укоротим'
                     if i['objects'][n]['candidat'] is None:
                         red_response = 'No'
-                    elif len(i['objects'][n]['candidat']) > 150:
+                    elif len(i['objects'][n]['candidat']) > 200:
                         red_response = i['objects'][n]['candidat']
                         red_response = re.sub('\n', '', red_response)
-                        red_response = red_response[:150] + '...'
+                        red_response = red_response[:200] + '...'
                     else:
                         red_response = i['objects'][n]['candidat']
                         red_response = re.sub('\n', '', red_response)
@@ -109,9 +109,24 @@ class Engine():
 
         return data
 
-    @staticmethod
-    def see_vacansies(n):
-        pass
+    def see_vacansies(self, n):
+        i = self.get_connector()
+        i_count = 0
+        for vacan in i:
+            s = Vacancy(vacan)
+            print(s)
+            i_count += 1
+            if i_count == n:
+                break
+
+    def see_top_10(self):
+        data = self.get_connector()
+        best_list = []
+        best_salary = 0
+        best_index = 0
+        for i in data:
+            if i['salary'] > best_salary:
+                pass
 
     def get_len_search_vac(self):
         'Дает значение кол-ва найденных вакансий'
@@ -163,7 +178,7 @@ class Vacancy():
         self.__requirement = data['requirement']
 
     def __repr__(self):
-        return f'Название вакансии: {self.__name} \n Ссылка на вакансию: {self.__url} \n Город: {self.__area} \n Зарплата: {self.__salary} \n Описание: {self.__responsibility} Требования: {self.__requirement}'
+        return f'Название вакансии: {self.__name} \n Ссылка на вакансию: {self.__url} \n Город: {self.__area} \n Зарплата: {self.__salary} \n Описание: {self.__responsibility}\n Требования: {self.__requirement}'
 
     def __lt__(self, other):
         if type(self.__salary) == str or type(other.__salary) == str:
