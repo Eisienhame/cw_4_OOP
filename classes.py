@@ -133,7 +133,7 @@ class Engine():
             best_index = 0
             for i in data:
                 if i['salary'] == 'Unknown':
-                    continue
+                    pass
                 else:
                     if int(i['salary']) > best_salary:
                         best_salary = int(i['salary'])
