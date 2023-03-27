@@ -47,7 +47,7 @@ while main_exit is True:
                             continue
 
                     if option_menu == '2':
-                        pass
+                        job_class.see_top_10()
 
                     if option_menu == '3':
                         pass

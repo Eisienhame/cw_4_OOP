@@ -110,6 +110,7 @@ class Engine():
         return data
 
     def see_vacansies(self, n):
+        'n - кол-во показывваемых вакансий'
         i = self.get_connector()
         i_count = 0
         for vacan in i:
@@ -122,11 +123,29 @@ class Engine():
     def see_top_10(self):
         data = self.get_connector()
         best_list = []
-        best_salary = 0
-        best_index = 0
-        for i in data:
-            if i['salary'] > best_salary:
-                pass
+        if self.get_len_search_vac() > 10:
+            top_count = 10
+        else:
+            top_count = self.get_len_search_vac()
+        for n in range(top_count):
+            index = 0
+            best_salary = 0
+            best_index = 0
+            for i in data:
+                if i['salary'] == 'Unknown':
+                    continue
+                else:
+                    if int(i['salary']) > best_salary:
+                        best_salary = int(i['salary'])
+                        best_index = index
+                index += 1
+            if best_salary != 0:
+                best_list.append(data[best_index])
+                data.pop(best_index)
+
+        for vacan in best_list:
+            s = Vacancy(vacan)
+            print(s)
 
     def get_len_search_vac(self):
         'Дает значение кол-ва найденных вакансий'
