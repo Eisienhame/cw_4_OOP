@@ -7,7 +7,7 @@ class Engine():
     @abstractmethod
     def get_request_hh(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        #getdata_hh()
+        # getdata_hh()
         work_dic_hh = []
         with open("data_file.json", "r") as write_file:
             dic_hh = json.load(write_file)
@@ -41,15 +41,13 @@ class Engine():
                     else:
                         red_response = i['items'][n]['snippet']['responsibility']
 
-
                     next_item = {'name': i['items'][n]['name'],
-                                        'url': i['items'][n]['alternate_url'],
-                                        'area': i['items'][n]['area']['name'],
-                                        'salary': salary_single,
-                                        'employer': i['items'][n]['employer']['name'],
-                                        'requirement': red_requir, #требоваия
-                                        'responsibility': red_response}  #описание
-
+                                 'url': i['items'][n]['alternate_url'],
+                                 'area': i['items'][n]['area']['name'],
+                                 'salary': salary_single,
+                                 'employer': i['items'][n]['employer']['name'],
+                                 'requirement': red_requir,  # требоваия
+                                 'responsibility': red_response}  # описание
 
                     work_dic_hh.append(next_item)
 
@@ -58,7 +56,7 @@ class Engine():
     @abstractmethod
     def get_request_sj(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        #getdata_sj()
+        # getdata_sj()
         work_dic_sj = []
         with open("data_file.json", "r") as write_file:
             dic_sj = json.load(write_file)
@@ -99,19 +97,30 @@ class Engine():
                                         'area': i['objects'][n]['town']['title'],
                                         'salary': salary_single,
                                         'employer': i['objects'][n]['client']['title'],
-                                        'requirement': red_requir, #требоваия
-                                        'responsibility': red_response})  #описание
+                                        'requirement': red_requir,  # требоваия
+                                        'responsibility': red_response})  # описание
         return work_dic_sj
 
+    @staticmethod
+    def get_connector():
+        """ Коннект к файлу с вакансиями позьзователя """
+        with open("searching_vac.json", "r") as write_file:
+            data = json.load(write_file)
+
+        return data
 
     @staticmethod
-    def get_connector(file_name):
-        """ Возвращает экземпляр класса Connector """
-    pass
+    def see_vacansies(n):
+        pass
 
+    def get_len_search_vac(self):
+        'Дает значение кол-ва найденных вакансий'
+        i = self.get_connector()
+        return len(i)
 
 class HH(Engine):
     '''Формируем класс ХХ по искомому знач в названии вакансии, и создаем файл json с необходимыми параметрами'''
+
     def __init__(self, key_search):
         data = self.get_request_hh()
         print(data)
@@ -120,13 +129,15 @@ class HH(Engine):
         else:
             searching_list = []
             for i in data:
-                #k = key_search.lower
                 if key_search.lower() in str(i['name']).lower():
                     searching_list.append(i)
             with open("searching_vac.json", "w", encoding='utf-8') as write_file:
                 json.dump(searching_list, write_file, indent=4)
+
+
 class Superjob(Engine):
     '''Формируем класс SJ по искомому знач в названии вакансии, и создаем файл json с необходимыми параметрами'''
+
     def __init__(self, key_search):
         data = self.get_request_sj()
         if type(key_search) != str:
@@ -138,9 +149,12 @@ class Superjob(Engine):
                     searching_list.append(i)
             with open("searching_vac.json", "w", encoding='utf-8') as write_file:
                 json.dump(searching_list, write_file, indent=4)
+
+
 class Vacancy():
     ''' Класс для работы и хранения данных о вакансии'''
-    def __init__(self, data:dict):
+
+    def __init__(self, data: dict):
         self.__name = data['name']
         self.__url = data['url']
         self.__area = data['area']
