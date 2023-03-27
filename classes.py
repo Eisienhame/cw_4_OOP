@@ -56,7 +56,7 @@ class Engine():
     @abstractmethod
     def get_request_sj(self):
         'В зависимости от необходимого сервиса HH/SJ создается  файл с отосортированными вакансиями'
-        #getdata_sj()
+        getdata_sj()
         work_dic_sj = []
         with open("data_file.json", "r") as write_file:
             dic_sj = json.load(write_file)
@@ -191,7 +191,6 @@ class Superjob(Engine):
 
     def __init__(self, key_search):
         data = self.get_request_sj()
-        print(data)
         if type(key_search) != str:
             raise TypeError("Некорректный запрос на поиск вакансий")
         else:
