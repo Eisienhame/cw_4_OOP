@@ -5,9 +5,6 @@ main_exit = True  # ключи для более наглядного завер
 menu_exit = True
 
 
-k = Engine()
-k.get_connector()
-
 while main_exit is True:
     while menu_exit is True:
         print('Напишите с какого сайта вы бы хотели искать работу: 1 = "Headhunter", 2 = "Superjob"')
