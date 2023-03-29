@@ -1,9 +1,9 @@
 import requests, json, re
-from classes import HH, Engine, Superjob, Vacancy
+from utils import getdata_hh, getdata_sj
+from classes import HH, Engine, Superjob, Vacancy, Connector
 
 main_exit = True  # ключи для более наглядного завершения программы
 menu_exit = True
-
 
 while main_exit is True:
     while menu_exit is True:
